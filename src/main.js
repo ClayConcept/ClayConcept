@@ -18,6 +18,49 @@ function toggleMobileMenu() {
   menuRight.classList.toggle('active');
 }
 
+// Quotes slideshow functionality
+function initQuotesSlideshow() {
+  const quotes = document.querySelectorAll('.quote-box');
+  const dotsContainer = document.querySelector('.quote-dots');
+  const prevButton = document.querySelector('.quote-nav.prev');
+  const nextButton = document.querySelector('.quote-nav.next');
+  let currentQuote = 0;
+
+  // Create dots
+  quotes.forEach((_, index) => {
+    const dot = document.createElement('div');
+    dot.className = `quote-dot${index === 0 ? ' active' : ''}`;
+    dot.addEventListener('click', () => showQuote(index));
+    dotsContainer.appendChild(dot);
+  });
+
+  function showQuote(index) {
+    quotes.forEach(quote => quote.classList.remove('active'));
+    document.querySelectorAll('.quote-dot').forEach(dot => dot.classList.remove('active'));
+    
+    quotes[index].classList.add('active');
+    document.querySelectorAll('.quote-dot')[index].classList.add('active');
+    currentQuote = index;
+  }
+
+  function nextQuote() {
+    currentQuote = (currentQuote + 1) % quotes.length;
+    showQuote(currentQuote);
+  }
+
+  function prevQuote() {
+    currentQuote = (currentQuote - 1 + quotes.length) % quotes.length;
+    showQuote(currentQuote);
+  }
+
+  // Add event listeners
+  if (prevButton) prevButton.addEventListener('click', prevQuote);
+  if (nextButton) nextButton.addEventListener('click', nextQuote);
+
+  // Auto-advance every 5 seconds
+  setInterval(nextQuote, 5000);
+}
+
 // Import projects data
 import { projects } from './data/projects.js';
 
@@ -181,6 +224,7 @@ document.getElementById('hamburger')?.addEventListener('click', toggleMobileMenu
 // Initialize on load and resize
 window.addEventListener('load', () => {
   initializeHamburgerVisibility();
+  initQuotesSlideshow();
   
   // Initialize work page if we're on it
   if (window.location.pathname.includes('work.html')) {

@@ -229,32 +229,40 @@ a {
   border: 1px solid var(--border-color);
 }
 
-.quotes-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: -1px;
+.quotes-slideshow {
   margin-top: var(--container-padding);
   width: 100%;
+  border: 1px solid var(--border-color);
+}
+
+.quote-container {
+  position: relative;
+  overflow: hidden;
 }
 
 .quote-box {
-  display: flex;
+  display: none;
   flex-direction: column;
-  border: 1px solid var(--border-color);
-  height: 200px;
   width: 100%;
-  min-width: 300px;
+  opacity: 0;
+  transition: opacity 0.5s ease;
+}
+
+.quote-box.active {
+  display: flex;
+  opacity: 1;
 }
 
 .quote-text {
   flex: 2;
   border-bottom: 1px solid var(--border-color);
-  padding: 20px;
+  padding: 40px 20px;
   display: flex;
   align-items: center;
   justify-content: center;
   text-align: center;
   font-style: italic;
+  min-height: 200px;
 }
 
 .quote-author {
@@ -266,6 +274,44 @@ a {
   text-align: center;
   font-weight: bold;
   text-transform: uppercase;
+}
+
+.quote-controls {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px;
+  border-top: 1px solid var(--border-color);
+}
+
+.quote-nav {
+  background: none;
+  border: 1px solid var(--border-color);
+  color: var(--text-color);
+  padding: 10px 20px;
+  cursor: pointer;
+  font-family: inherit;
+}
+
+.quote-nav:hover {
+  background-color: var(--text-color);
+  color: var(--bg-color);
+}
+
+.quote-dots {
+  display: flex;
+  gap: 10px;
+}
+
+.quote-dot {
+  width: 10px;
+  height: 10px;
+  border: 1px solid var(--border-color);
+  cursor: pointer;
+}
+
+.quote-dot.active {
+  background-color: var(--text-color);
 }
 
 .faq-container {
