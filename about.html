@@ -4,29 +4,32 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>About Us - Clay Concept</title>
-    <link rel="stylesheet" href="src/style.css">
+    <link rel="stylesheet" href="./src/style.css">
   </head>
   <body>
     <div id="app">
       <nav class="menu">
         <div class="menu-left">
-          <a href="index.html" class="menu-item" id="home-link">
-            <img src="src/assets/logo-white.svg" alt="Logo" class="logo-svg" />
+          <a href="./index.html" class="menu-item" id="home-link">
+            <img src="./src/assets/logo-white.svg" alt="Logo" class="logo-svg" />
           </a>
           <div class="menu-item" id="theme-toggle">[○|●]</div>
           <div class="hamburger" id="hamburger">[≡]</div>
         </div>
         <div class="menu-right">
-          <a href="about.html" class="menu-item">About</a>
-          <a href="work.html" class="menu-item">Work</a>
-          <a href="contact.html" class="menu-item">Contact</a>
+          <a href="./about.html" class="menu-item">About</a>
+          <a href="./work.html" class="menu-item">Work</a>
+          <a href="./contact.html" class="menu-item">Contact</a>
         </div>
       </nav>
       
-      <div class="container">
-        <div class="content-box text-left">
-          <h1>ABOUT US</h1>
-          <div class="narrow-text">
+<main class="container">
+       
+        <div class="content-box">
+          <section class="about-section">
+          
+            <article class="about-content">
+            <h1>ABOUT US</h1>
             <p style="margin: 20px 0">
               ClayConcept is a design agency focused
               on providing streamlined design services
@@ -60,9 +63,20 @@
             <p style="margin: 20px 0">
               Please reach-out to find out more!
             </p>
+          </article>
+          <div class="about-image">
+            <img src="https://images.unsplash.com/photo-1497215728101-856f4ea42174?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80" alt="Office Space">
           </div>
-          <h1>About the Founder</h1>
-          <div class="narrow-text">
+        </section>
+      </div>
+       
+ 
+  
+<!--
+     <div class="content-box">
+          <section class="about-section reverse">
+          <article class="about-content">
+            <h1>About the Founder</h1>
             <p style="margin: 20px 0">
               Jon Prado is a designer embracing the 
               values of Social & Ecological Responsibility. 
@@ -84,25 +98,17 @@
               Product Development, User Experiences, 
               Branding & Digital Communication Interfaces.
             </p>
+          </article>
+          <div class="about-image">
+            <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=687&q=80" alt="Founder Portrait">
           </div>
-
-          <div class="grid" style="margin-top: 20px">
-            <div class="grid-item">
-              <h3>Philosophy</h3>
-              <p>Embracing simplicity and structural honesty</p>
-            </div>
-            <div class="grid-item">
-              <h3>Process</h3>
-              <p>Function-first design approach</p>
-            </div>
-            <div class="grid-item">
-              <h3>Vision</h3>
-              <p>Creating impactful digital experiences</p>
-            </div>
-          </div>
-        </div>
+        </section>
       </div>
-    </div>
-    <script type="module" src="/src/main.js"></script>
+-->
+  
+</main>
+
+    
+    <script type="module" src="./src/main.js"></script>
   </body>
 </html>
