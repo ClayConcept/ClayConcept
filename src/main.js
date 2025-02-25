@@ -7,21 +7,30 @@ function toggleTheme() {
   
   // Update logo source based on theme
   const logo = document.querySelector('.logo-svg');
-  if (!logo.classList.contains('active')) {
-    logo.src = `src/assets/logo-${newTheme === 'light' ? 'black' : 'white'}.svg`;
+  if (logo && !logo.classList.contains('active')) {
+    logo.src = `./src/assets/logo-${newTheme === 'light' ? 'black' : 'white'}.svg`;
   }
 }
 
 // Toggle mobile menu
 function toggleMobileMenu() {
   const menuRight = document.querySelector('.menu-right');
-  menuRight.classList.toggle('active');
+  if (menuRight) {
+    menuRight.classList.toggle('active');
+  }
 }
 
 // Quotes slideshow functionality
 function initQuotesSlideshow() {
+  const quoteContainer = document.querySelector('.quotes-slideshow');
+  if (!quoteContainer) return; // Exit if quotes container doesn't exist
+
   const quotes = document.querySelectorAll('.quote-box');
+  if (!quotes.length) return; // Exit if no quotes found
+
   const dotsContainer = document.querySelector('.quote-dots');
+  if (!dotsContainer) return; // Exit if dots container doesn't exist
+
   const prevButton = document.querySelector('.quote-nav.prev');
   const nextButton = document.querySelector('.quote-nav.next');
   let currentQuote = 0;
@@ -35,11 +44,14 @@ function initQuotesSlideshow() {
   });
 
   function showQuote(index) {
+    const dots = document.querySelectorAll('.quote-dot');
+    if (!dots.length) return; // Exit if no dots found
+
     quotes.forEach(quote => quote.classList.remove('active'));
-    document.querySelectorAll('.quote-dot').forEach(dot => dot.classList.remove('active'));
+    dots.forEach(dot => dot.classList.remove('active'));
     
     quotes[index].classList.add('active');
-    document.querySelectorAll('.quote-dot')[index].classList.add('active');
+    dots[index].classList.add('active');
     currentQuote = index;
   }
 
@@ -58,7 +70,12 @@ function initQuotesSlideshow() {
   if (nextButton) nextButton.addEventListener('click', nextQuote);
 
   // Auto-advance every 5 seconds
-  setInterval(nextQuote, 5000);
+  const interval = setInterval(nextQuote, 5000);
+
+  // Clean up interval when page changes
+  window.addEventListener('beforeunload', () => {
+    clearInterval(interval);
+  });
 }
 
 // Import projects data
@@ -110,7 +127,7 @@ function updateProjects(tag, searchTerm) {
   document.querySelectorAll('.grid-item').forEach(item => {
     item.addEventListener('click', () => {
       const projectId = parseInt(item.dataset.projectId);
-      window.location.href = `project.html?id=${projectId}`;
+      window.location.href = `./project.html?id=${projectId}`;
     });
   });
 }
@@ -208,6 +225,8 @@ function addGridItemHoverEffects() {
 // Initialize hamburger visibility based on screen size
 function initializeHamburgerVisibility() {
   const hamburger = document.getElementById('hamburger');
+  if (!hamburger) return;
+  
   if (window.innerWidth > 768) {
     hamburger.style.display = 'none';
   } else {
