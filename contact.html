@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Contact - Brutalist Design</title>
+    <link rel="stylesheet" href="src/style.css">
+  </head>
+  <body>
+    <div id="app">
+      <nav class="menu">
+        <div class="menu-left">
+          <a href="index.html" class="menu-item" id="home-link">
+            <img src="src/assets/logo-white.svg" alt="Logo" class="logo-svg" />
+          </a>
+          <div class="menu-item" id="theme-toggle">[○|●]</div>
+          <div class="hamburger" id="hamburger">[≡]</div>
+        </div>
+        <div class="menu-right">
+          <a href="about.html" class="menu-item">About</a>
+          <a href="work.html" class="menu-item">Work</a>
+          <a href="contact.html" class="menu-item">Contact</a>
+        </div>
+      </nav>
+      
+      <div class="container">
+        <div class="content-box">
+          <h1>CONTACT</h1>
+          <p style="margin: 20px 0">Get in touch with us</p>
+          
+          <form class="contact-form">
+            <div class="form-group">
+              <input type="text" placeholder="NAME" class="form-input">
+            </div>
+            <div class="form-group">
+              <input type="email" placeholder="EMAIL" class="form-input">
+            </div>
+            <div class="form-group">
+              <textarea placeholder="MESSAGE" class="form-input" rows="5"></textarea>
+            </div>
+            <button type="submit" class="button">Send Message</button>
+          </form>
+        </div>
+      </div>
+    </div>
+    <script type="module" src="/src/main.js"></script>
+  </body>
+</html>

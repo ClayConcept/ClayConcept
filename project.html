@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Project Details - Brutalist Design</title>
+    <link rel="stylesheet" href="src/style.css">
+  </head>
+  <body>
+    <div id="app">
+      <nav class="menu">
+        <div class="menu-left">
+          <a href="index.html" class="menu-item" id="home-link">
+            <img src="src/assets/logo-white.svg" alt="Logo" class="logo-svg" />
+          </a>
+          <div class="menu-item" id="theme-toggle">[○|●]</div>
+          <div class="hamburger" id="hamburger">[≡]</div>
+        </div>
+        <div class="menu-right">
+          <a href="about.html" class="menu-item">About</a>
+          <a href="work.html" class="menu-item">Work</a>
+          <a href="contact.html" class="menu-item">Contact</a>
+        </div>
+      </nav>
+      
+      <div class="container">
+        <div class="project-container">
+          <div class="project-header content-box">
+            <h1 id="project-title"></h1>
+            <p id="project-year" style="margin: 10px 0"></p>
+          </div>
+
+          <div class="project-content content-box">
+            <div class="project-image">
+              <!-- Image will be loaded dynamically -->
+            </div>
+            <div class="project-details">
+              <p id="project-description"></p>
+              <div class="project-technologies" id="project-technologies"></div>
+            </div>
+          </div>
+
+          <div class="content-box">
+            <a href="work.html" class="button">Back to Work</a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script type="module" src="/src/main.js"></script>
+  </body>
+</html>
