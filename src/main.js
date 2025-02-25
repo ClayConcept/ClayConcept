@@ -1,0 +1,245 @@
+// Theme toggle function
+function toggleTheme() {
+  const root = document.documentElement;
+  const currentTheme = root.getAttribute('data-theme');
+  const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+  root.setAttribute('data-theme', newTheme);
+  
+  // Update logo source based on theme
+  const logo = document.querySelector('.logo-svg');
+  if (!logo.classList.contains('active')) {
+    logo.src = `src/assets/logo-${newTheme === 'light' ? 'black' : 'white'}.svg`;
+  }
+}
+
+// Toggle mobile menu
+function toggleMobileMenu() {
+  const menuRight = document.querySelector('.menu-right');
+  menuRight.classList.toggle('active');
+}
+
+// Import projects data
+import { projects } from './data/projects.js';
+
+// Get unique tags from projects
+function getUniqueTags() {
+  const tags = new Set();
+  projects.forEach(project => {
+    project.tags.forEach(tag => tags.add(tag));
+  });
+  return Array.from(tags).sort();
+}
+
+// Filter projects by tag and search term
+function filterProjects(tag = null, searchTerm = '') {
+  return projects.filter(project => {
+    const matchesTag = !tag || project.tags.includes(tag);
+    const matchesSearch = !searchTerm || 
+      project.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      project.shortDescription.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      project.fullDescription.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      project.tags.some(t => t.toLowerCase().includes(searchTerm.toLowerCase()));
+    return matchesTag && matchesSearch;
+  });
+}
+
+// Navigation function
+async function navigateTo(page, projectId = null) {
+  try {
+    let response;
+    if (projectId !== null) {
+      response = await fetch('/src/pages/project.html');
+    } else {
+      response = await fetch(`/src/pages/${page}.html`);
+    }
+    
+    const html = await response.text();
+    document.querySelector('.container').innerHTML = html;
+
+    if (page === 'work') {
+      loadProjects();
+      initializeFilters();
+    } else if (projectId !== null) {
+      loadProject(projectId);
+    } else if (page === 'about') {
+      initializeFAQ();
+    }
+    
+    // Update logo active state
+    const logo = document.querySelector('.logo-svg');
+    if (page === 'home') {
+      logo.classList.add('active');
+      logo.src = 'src/assets/logo-blue.svg';
+    } else {
+      logo.classList.remove('active');
+      const theme = document.documentElement.getAttribute('data-theme');
+      logo.src = `src/assets/logo-${theme === 'light' ? 'black' : 'white'}.svg`;
+    }
+    
+    // Reattach hover effects to new grid items
+    addGridItemHoverEffects();
+  } catch (error) {
+    console.error('Error loading page:', error);
+  }
+}
+
+// Initialize filters
+function initializeFilters() {
+  const tagsFilter = document.getElementById('tags-filter');
+  const searchInput = document.getElementById('search-input');
+  let activeTag = null;
+
+  // Add tags
+  const tags = getUniqueTags();
+  tagsFilter.innerHTML = tags.map(tag => 
+    `<button class="tag-button" data-tag="${tag}">${tag}</button>`
+  ).join('');
+
+  // Add event listeners
+  tagsFilter.addEventListener('click', (e) => {
+    if (e.target.classList.contains('tag-button')) {
+      const tag = e.target.dataset.tag;
+      
+      // Toggle active state
+      document.querySelectorAll('.tag-button').forEach(btn => 
+        btn.classList.remove('active')
+      );
+      
+      if (activeTag === tag) {
+        activeTag = null;
+      } else {
+        e.target.classList.add('active');
+        activeTag = tag;
+      }
+      
+      updateProjects(activeTag, searchInput.value);
+    }
+  });
+
+  searchInput.addEventListener('input', (e) => {
+    updateProjects(activeTag, e.target.value);
+  });
+}
+
+// Update projects based on filters
+function updateProjects(tag, searchTerm) {
+  const filteredProjects = filterProjects(tag, searchTerm);
+  const grid = document.getElementById('projects-grid');
+  
+  grid.innerHTML = filteredProjects.map(project => `
+    <div class="grid-item" data-project-id="${project.id}">
+      <img src="${project.images[0]}" alt="${project.title}" class="grid-item-image">
+      <div class="grid-item-content">
+        <h3>${project.title}</h3>
+        <p>${project.shortDescription}</p>
+        <div class="project-tags">
+          ${project.tags.map(tag => `<span class="project-tag">${tag}</span>`).join('')}
+        </div>
+      </div>
+    </div>
+  `).join('');
+
+  // Add click event listeners to grid items
+  document.querySelectorAll('.grid-item').forEach(item => {
+    item.addEventListener('click', () => {
+      const projectId = parseInt(item.dataset.projectId);
+      navigateTo('project', projectId);
+    });
+  });
+}
+
+// Load projects into work page
+function loadProjects() {
+  updateProjects(null, '');
+}
+
+// Load individual project
+function loadProject(projectId) {
+  const project = projects.find(p => p.id === projectId);
+  if (!project) return;
+
+  document.getElementById('project-title').textContent = project.title;
+  document.getElementById('project-year').textContent = `Year: ${project.year}`;
+  document.getElementById('project-description').textContent = project.fullDescription;
+
+  const techContainer = document.getElementById('project-technologies');
+  techContainer.innerHTML = project.technologies
+    .map(tech => `<span class="technology-tag">${tech}</span>`)
+    .join('');
+
+  const imageContainer = document.querySelector('.project-image');
+  imageContainer.innerHTML = `<img src="${project.images[0]}" alt="${project.title}">`;
+}
+
+// Initialize FAQ functionality
+function initializeFAQ() {
+  document.querySelectorAll('.faq-question').forEach(question => {
+    question.addEventListener('click', () => {
+      const faqItem = question.parentElement;
+      const toggle = question.querySelector('.faq-toggle');
+      
+      // Close all other FAQ items
+      document.querySelectorAll('.faq-item').forEach(item => {
+        if (item !== faqItem && item.classList.contains('active')) {
+          item.classList.remove('active');
+          item.querySelector('.faq-toggle').textContent = '[+]';
+        }
+      });
+      
+      // Toggle current FAQ item
+      faqItem.classList.toggle('active');
+      toggle.textContent = faqItem.classList.contains('active') ? '[-]' : '[+]';
+    });
+  });
+}
+
+// Add hover effects to grid items
+function addGridItemHoverEffects() {
+  document.querySelectorAll('.grid-item').forEach(item => {
+    item.addEventListener('mouseenter', () => {
+      item.style.backgroundColor = getComputedStyle(document.documentElement).getPropertyValue('--text-color');
+      item.style.color = getComputedStyle(document.documentElement).getPropertyValue('--bg-color');
+    });
+    
+    item.addEventListener('mouseleave', () => {
+      item.style.backgroundColor = 'transparent';
+      item.style.color = getComputedStyle(document.documentElement).getPropertyValue('--text-color');
+    });
+  });
+}
+
+// Add theme toggle event listener
+document.getElementById('theme-toggle').addEventListener('click', toggleTheme);
+
+// Add hamburger menu event listener
+document.getElementById('hamburger').addEventListener('click', toggleMobileMenu);
+
+// Add navigation event listeners
+document.querySelectorAll('.menu-right .menu-item').forEach(item => {
+  item.addEventListener('click', () => {
+    const page = item.textContent.toLowerCase();
+    navigateTo(page);
+  });
+});
+
+// Add home link event listener
+document.getElementById('home-link').addEventListener('click', () => {
+  navigateTo('home');
+});
+
+// Initialize hamburger visibility based on screen size
+function initializeHamburgerVisibility() {
+  const hamburger = document.getElementById('hamburger');
+  if (window.innerWidth > 768) {
+    hamburger.style.display = 'none';
+  } else {
+    hamburger.style.display = 'flex';
+  }
+}
+
+// Initialize on load and resize
+window.addEventListener('load', () => {
+  initializeHamburgerVisibility();
+  navigateTo('home');
+});
+window.addEventListener('resize', initializeHamburgerVisibility);
